@@ -4,9 +4,13 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 
 public class TimeUtils {
+	
+	public static final String ISO8601_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 	
 	/**
 	 * ISO 8601/RFC 3339 represents timezone information a little bit
@@ -33,7 +37,7 @@ public class TimeUtils {
 	public static long iso8601StringToUnixTime(String timeStamp) {
 		long unixTime = -1;
 		TimeZone tzUTC = Calendar.getInstance().getTimeZone();
-		DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+		DateFormat format = new SimpleDateFormat(ISO8601_FORMAT);
 		format.setTimeZone(tzUTC);
 		try {
 			// Reminder: getTime returns the number of milliseconds from the
@@ -43,6 +47,13 @@ public class TimeUtils {
 			// Return initialized value of -1;
 		}
 		return unixTime;
+	}
+
+	public static String dateToISO8601String() {
+		Date now = new Date();
+		DateFormat dateFormat = new SimpleDateFormat(ISO8601_FORMAT, Locale.US);
+		dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+		return dateFormat.format(now);
 	}
 	
 	// Other mentions:
